@@ -41,3 +41,28 @@ function GetUserIdFromUserAndPassword($login, $password)
     return -1; //On retourne -1 car on est sur qu'il n'y aura pas d'id négatif.
   }
 }
+
+function isNickmanFree()
+{
+  global $PDO;
+  $response = $PDO->prepare("SELECT * FROM user WHERE nickname = :nickname ");
+  $response->execute(
+    array(
+      "nickname" => $nickname
+    )
+  );
+  return $response->rowCount() == 0;
+}
+
+function CreateNewUser($nickname, $password)
+{
+  global $PDO;
+  $response = $PDO->prepare("INSERT INTO user (nickname, password) values (:nickname , :password )");
+  $response->execute(
+    array(
+      "nickname" => $nickname,
+      "password" => $password
+    )
+  );
+  return $PDO->lastInsertId();
+}
