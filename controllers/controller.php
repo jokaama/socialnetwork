@@ -30,9 +30,13 @@ switch ($action) {
       include "../views/LoginForm.php";
     }
     break;
-
+    // Si l'utilisateur est connecté et souhaite créer un nouveau message (valeur lue depuis $_POST['msg']) alors nous allons faire un insert dans la table post avec la fonction CreateNewPost.
   case 'newMsg':
-    // code...
+    include "../models/PostManager.php";
+    if (isset($_SESSION['userId']) && isset($_POST['msg'])) {
+      CreateNewPost($_SESSION['userId'], $_POST['msg']);
+    }
+    header('Location: ?action=display');
     break;
 
   case 'newComment':
